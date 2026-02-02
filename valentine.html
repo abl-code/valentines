@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my Valentine? 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffb3d9 0%, #ff99cc 25%, #ff66b2 50%, #ff3385 75%, #ff0066 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 105, 180, 0.4) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #ffffff;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 6px rgba(255, 0, 102, 0.6),
+                         0 0 20px rgba(255, 105, 180, 0.8);
+            animation: pulse 2s ease-in-out infinite;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 20px 50px;
+            font-size: 1.4rem;
+            border: 3px solid #ffffff;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+            color: white;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 8px 30px rgba(255, 20, 147, 0.6);
+            border-color: #ffccee;
+        }
+
+        #noBtn {
+            background: linear-gradient(135deg, #ffb3d9 0%, #ff99cc 100%);
+            color: #cc0066;
+            transition: all 0.2s ease;
+        }
+
+        #noBtn:hover {
+            transform: translate(var(--x, 0), var(--y, 0));
+        }
+
+        .result {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result img {
+            max-width: 100%;
+            width: 400px;
+            height: auto;
+            border-radius: 30px;
+            margin: 20px auto;
+            box-shadow: 0 10px 40px rgba(255, 0, 102, 0.5);
+            border: 5px solid #ffffff;
+        }
+
+        .message {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-top: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .happy-message {
+            color: #ffffff;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        .sad-message {
+            color: #ffe0f0;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: float linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.5);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(50vh) rotate(180deg) scale(1);
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Sparkle effect */
+        .sparkle {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            z-index: 5;
+        }
+
+        .sparkle-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    <div class="sparkle" id="sparkle"></div>
+    
+    <div class="container">
+        <h1>Will you be my Valentine? 💝</h1>
+        
+        <div class="buttons" id="buttons">
+            <button id="yesBtn">Yes 💖</button>
+            <button id="noBtn">No 😢</button>
+        </div>
+
+        <div class="result" id="happyResult">
+            <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Happy Cat">
+            <div class="message happy-message">Yay!! I'm so happy ❤️🐱</div>
+        </div>
+
+        <div class="result" id="sadResult">
+            <img src="https://media.giphy.com/media/6qFFgNgextP9u/giphy.gif" alt="Sad Cat">
+            <div class="message sad-message">Oh no… please try again 🥺</div>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const buttons = document.getElementById('buttons');
+        const happyResult = document.getElementById('happyResult');
+        const sadResult = document.getElementById('sadResult');
+        const heartsContainer = document.getElementById('hearts');
+        const sparkleContainer = document.getElementById('sparkle');
+
+        // Continuous floating hearts
+        function continuousHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                const heartSymbols = ['💖', '💕', '💗', '💓', '💝', '💘'];
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                heartsContainer.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 7000);
+            }, 300);
+        }
+
+        // Create sparkles
+        function createSparkles() {
+            for (let i = 0; i < 50; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle-dot';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                sparkleContainer.appendChild(sparkle);
+            }
+        }
+
+        // Yes button click
+        yesBtn.addEventListener('click', () => {
+            buttons.style.display = 'none';
+            sadResult.style.display = 'none';
+            happyResult.style.display = 'block';
+            createHeartExplosion();
+        });
+
+        // No button click
+        noBtn.addEventListener('click', () => {
+            happyResult.style.display = 'none';
+            sadResult.style.display = 'block';
+        });
+
+        // Make No button move away on hover
+        noBtn.addEventListener('mouseenter', (e) => {
+            const randomX = (Math.random() - 0.5) * 250;
+            const randomY = (Math.random() - 0.5) * 250;
+            noBtn.style.setProperty('--x', randomX + 'px');
+            noBtn.style.setProperty('--y', randomY + 'px');
+        });
+
+        // Reset No button position when mouse leaves
+        noBtn.addEventListener('mouseleave', () => {
+            noBtn.style.setProperty('--x', '0px');
+            noBtn.style.setProperty('--y', '0px');
+        });
+
+        // Create heart explosion when Yes is clicked
+        function createHeartExplosion() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    const heartSymbols = ['💖', '💕', '💗', '💓', '💝', '💘', '❤️', '💞'];
+                    heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                    heart.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
+                    heartsContainer.appendChild(heart);
+
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 5000);
+                }, i * 100);
+            }
+        }
+
+        // Start continuous hearts on load
+        continuousHearts();
+        createSparkles();
+    </script>
+</body>
+</html>
